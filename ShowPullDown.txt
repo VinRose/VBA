@@ -1,0 +1,26 @@
+Sub ShowPullDown()
+    Dim buf As String
+    Dim dirPath As String
+    Dim ans As Integer
+    Dim list As String
+    
+    ans = MsgBox("Continue?", vbYesNo)
+    If (ans = vbYes) Then
+        dirPath = ThisWorkbook.path
+        buf = Dir(dirPath & "\" & "*.xlsx")
+        Do While buf <> ""
+       list = list + “,” + buf
+            buf = Dir()
+        Loop
+        Call MakeList(list)
+    Else
+        MsgBox ("Canceled.")
+    End If
+    
+End Sub
+
+Sub MakeList(list As String)
+    Range(“D2”).Validation.Delete
+    Range(“D2”).Validation.Add Type:= xlValidateList, _
+    Formula1:= list
+EndSub

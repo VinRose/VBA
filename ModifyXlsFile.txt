@@ -1,0 +1,53 @@
+Option Explicit
+Sub ShowPath()
+Cells(1, 2).Value = ThisWorkbook.path
+End Sub
+Private Sub Deviation(dirPath As String, fileName As String)
+    Dim path As String
+    path = dirPath & "\" & fileName
+    Workbooks.Open path
+
+    Call ChangeCellSize
+    Call ReplaceStr
+    Workbooks(fileName).Close savechanges:=True
+End Sub
+Sub ModifyXlsFile()
+    Dim buf As String, count As Long
+    Dim dirPath As String
+    Dim ans As Integer
+
+    ans = MsgBox("続けますか?", vbYesNo)
+    If (ans = vbYes) Then
+        dirPath = ThisWorkbook.path
+        buf = Dir(dirPath & "\" & "*.xlsx")
+        Do While buf <> ""
+            count = count + 1
+            Call Deviation(dirPath, buf)
+            buf = Dir()
+        Loop
+
+        MsgBox count & " 個のファイルを変更しました。"
+    Else
+        MsgBox ("処理を中止しました。")
+    End If
+
+End Sub
+Private Sub ChangeCellSize()
+    'Please set here!
+    '----------------------------'
+    Range("1:3").RowHeight = 40
+    Range("B:C").ColumnWidth = 40
+    '----------------------------'
+End Sub
+Private Sub ReplaceStr()
+    Dim myRange As Range
+    Dim keyWord1 As String, keyWord2 As String
+    Dim bool As Boolean
+    'Please set here!
+    '----------------------------'
+    Set myRange = Range("A1:C5")
+    keyWord1 = "A"
+    keyWord2 = "O"
+    '----------------------------'
+    bool = myRange.Replace(keyWord1, keyWord2, LookAt:=xlPart)
+End Sub

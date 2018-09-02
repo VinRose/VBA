@@ -1,0 +1,32 @@
+Option Explicit
+Sub ReadCsv()
+    Dim lineStr As String
+    Dim arrayStr As Variant
+    Dim rowIndex As Integer
+    Dim ans As Integer
+
+    Dim dirPath As String
+    Dim fileName As String
+    Dim path As String
+    Dim msg As String
+S
+    dirPath = ThisWorkbook.path
+    fileName = "animal.csv"
+    path = dirPath & "\" & fileName
+
+    msg = "Read " & fileName & " ?"
+    ans = MsgBox(msg, vbYesNo)
+    If (ans = vbYes) Then
+        Open path For Input As #1
+
+    rowIndex = 0
+    Do While Not EOF(1)
+        Line Input #1, lineStr
+        arrayStr = Split(lineStr, ",")
+        Range("B4").Resize(1, UBound(arrayStr) + 1).Offset(rowIndex) = arrayStr
+        rowIndex = rowIndex + 1
+
+    Loop
+    Close #1
+    End If
+End Sub
